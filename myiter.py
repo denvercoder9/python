@@ -1,6 +1,7 @@
 import random
 import inspect
 
+from itertools import ifilter, ifilterfalse
 from functools import wraps
 from toolz.curried import do, partial
 
@@ -50,6 +51,21 @@ def irandrange_exclude(stop, exclude, start=0):
 def random_numbers(start, stop):
     while True:
         yield random.randint(start, stop)
+
+
+def split_by(predicate, iterable):
+    return map(list, [
+        ifilter(predicate, iterable),
+        ifilterfalse(predicate, iterable)
+    ])
+
+
+def copy_and_merge(dict_, second_dict=None, **kwargs):
+    temp = dict_.copy()
+    if second_dict:
+        temp.update(second_dict)
+    temp.update(kwargs)
+    return temp
 
 
 ### experimental ###
