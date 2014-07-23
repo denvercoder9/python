@@ -1,6 +1,6 @@
 import random
 import inspect
-from operator import lt, gt
+from operator import lt, gt, contains
 from itertools import ifilter, ifilterfalse
 from functools import wraps
 
@@ -73,26 +73,29 @@ def merge(dict_, second_dict=None, **kwargs):
 
 # predicates
 
-is_integer = lambda x: isinstance(x, int)
-
-is_zero = lambda x: x == 0
-
-is_none = lambda x: x is None
-
-is_true = lambda x: x is True
-
-is_false = lambda x: x is False
-
-
 def apply_last(func, last):
     @wraps(func)
     def __inner(first):
         return func(first, last)
     return __inner
 
+is_integer = lambda x: isinstance(x, int)
+
+is_zero = lambda x: x == 0
+
+is_none = lambda x: x is None
+
+is_itrue = lambda x: bool(x)    # is implicit true
+
+is_true = lambda x: x is True
+
+is_talse = lambda x: x is False
 
 smaller = lambda x: apply_last(lt, x)
+
 larger = lambda x: apply_last(gt, x)
+
+in_ = lambda x: partial(contains, x)
 
 
 # experimental
@@ -126,3 +129,17 @@ def irandrange_exclude(stop, exclude, start=0):
     for i in irandrange(start, stop):
         if i not in exclude:
             yield i
+
+
+def call_while(predicate, function, *args, **kwargs):
+    result = None
+    while predicate:
+        result = function(*args, **kwargs)
+    return result
+
+
+def call_while_not(predicate, function, *args, **kwargs):
+    result = None
+    while not predicate:
+        result = function(*args, **kwargs)
+    return result
