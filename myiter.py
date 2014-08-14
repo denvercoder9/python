@@ -1,7 +1,8 @@
 import random
 import inspect
+import operator as op
 from operator import lt, gt, contains
-from itertools import ifilter, ifilterfalse
+from itertools import ifilter, ifilterfalse, takewhile
 from functools import wraps
 
 from toolz import compose
@@ -71,6 +72,10 @@ def merge(dict_, second_dict=None, **kwargs):
     return temp
 
 
+def dictmap(func, dict_):
+    return [func(k, v) for k, v in dict_.iteritems()]
+
+
 # predicates
 
 def apply_last(func, last):
@@ -91,11 +96,29 @@ is_true = lambda x: x is True
 
 is_talse = lambda x: x is False
 
+is_iterable = lambda x: isinstance(x, basestring) or '__iter__' in dir(x)
+
 smaller = lambda x: apply_last(lt, x)
 
 larger = lambda x: apply_last(gt, x)
 
 in_ = lambda x: partial(contains, x)
+
+
+# partial operators
+
+add = partial(reduce, op.add)  # this is really nothing but a sum()?
+
+sub = partial(reduce, op.sub)
+
+mul = partial(reduce, op.mul)
+
+div = partial(reduce, op.div)
+
+
+# recursive
+
+# TODO recursive sub-namespace... for example recursive.reduce, recursive.map (?)
 
 
 # experimental
@@ -143,3 +166,8 @@ def call_while_not(predicate, function, *args, **kwargs):
     while not predicate:
         result = function(*args, **kwargs)
     return result
+
+
+def get_longest_match(foo, bar):
+    is_same = lambda tup: tup[0] == tup[1]
+    return len(list(takewhile(is_same, zip(foo, bar))))
