@@ -130,8 +130,6 @@ def silent_filter(function, iterable):
 sfilter = silent_filter
 
 
-
-
 # predicates
 
 def apply_last(func, last):
@@ -176,7 +174,8 @@ div = partial(reduce, op.div)
 
 # recursive
 
-# TODO recursive sub-namespace... for example recursive.reduce, recursive.map (?)
+# TODO recursive sub-namespace... for example recursive.reduce,
+# recursive.map (?)
 
 
 # experimental
