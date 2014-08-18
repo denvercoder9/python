@@ -60,6 +60,9 @@ def take_first_not(func, it):
         if not func(i):
             return i
 
+def filter_none(it):
+    return filter(None, it)
+
 
 # functions on dicts
 
@@ -74,6 +77,46 @@ def merge(dict_, second_dict=None, **kwargs):
 
 def dictmap(func, dict_):
     return [func(k, v) for k, v in dict_.iteritems()]
+
+
+def silent_map(function, iterable):
+    temp = []
+    for item in iterable:
+        try:
+            temp.append(function(item))
+        except Exception:
+            pass
+    return temp
+
+smap = silent_map
+
+
+def silent_reduce(function, iterable, start=0):
+    temp = start
+    for item in iterable:
+        try:
+            temp = function(temp, item)
+        except Exception:
+            pass
+    return temp
+
+sreduce = silent_reduce
+
+
+def silent_filter(function, iterable):
+    temp = []
+    for item in iterable:
+        function = bool if function is None else function
+        try:
+            if function(item):
+                temp.append(item)
+        except Exception:
+            pass
+    return temp
+
+sfilter = silent_filter
+
+
 
 
 # predicates
