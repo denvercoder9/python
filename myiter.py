@@ -49,16 +49,27 @@ def split_by(predicate, iterable):
     ])
 
 
-def take_first(func, it):
+def _take_first(func, it):
     for i in it:
         if func(i):
-            return i
+            yield i
+            raise StopIteration
+
+
+def take_first(func, it):
+    return next(_take_first(func, it))
+
+
+def _take_first_not(func, it):
+    for i in it:
+        if not func(i):
+            yield i
+            raise StopIteration
 
 
 def take_first_not(func, it):
-    for i in it:
-        if not func(i):
-            return i
+    return next(_take_first_not(func, it))
+
 
 def filter_none(it):
     return filter(None, it)
@@ -214,3 +225,22 @@ def call_while_not(predicate, function, *args, **kwargs):
 def get_longest_match(foo, bar):
     is_same = lambda tup: tup[0] == tup[1]
     return len(list(takewhile(is_same, zip(foo, bar))))
+
+
+"""
+
+TODO
+
+clump
+
+clump(n, iter)
+clump_all(n, iter, default=None)
+
+>> clump(3, range(10)
+[(0, 1, 2), (3, 4, 5), (6, 7, 8)]
+
+>> clump_all(3, range(10))
+[(0, 1, 2), (3, 4, 5), (6, 7, 8), (9, None, None)]
+
+
+"""
