@@ -13,9 +13,11 @@ append = lambda v, l: do(l.append)(v) and l
 
 insert = lambda v, l: do(partial(l.insert, 0)(v)) and l
 
-head = lambda l: l[0]
+head = lambda l: l[0]           # operator.itemgetter(0)
 
-tail = lambda l: l[1:]
+tail = lambda l: l[1:]          # operator.itemgetter(slice(1, None))
+
+last = lambda l: l[-1]          # operator.itemgetter(-1)
 
 sort = do(list.sort)
 
@@ -151,6 +153,8 @@ is_true = lambda x: x is True
 is_talse = lambda x: x is False
 
 is_iterable = lambda x: isinstance(x, basestring) or '__iter__' in dir(x)
+
+# is_iterable can also be done... try: return bool(iter(it)) except ...
 
 smaller = lambda x: apply_last(lt, x)
 
