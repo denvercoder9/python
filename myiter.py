@@ -11,7 +11,17 @@ from toolz.curried import do, partial
 
 append = lambda v, l: do(l.append)(v) and l
 
+# def append(list_, item):
+#   new_list = list_[:]
+#   new_list.append(item)
+#   return new_list
+
 insert = lambda v, l: do(partial(l.insert, 0)(v)) and l
+
+# def insert(list_, item):
+#   new_list = list_[:]
+#   new_list.insert(0, item)
+#   return new_list
 
 head = lambda l: l[0]           # operator.itemgetter(0)
 
@@ -245,5 +255,17 @@ clump_all(n, iter, default=None)
 >> clump_all(3, range(10))
 [(0, 1, 2), (3, 4, 5), (6, 7, 8), (9, None, None)]
 
+
+irand_int
+irand_int_unique
+
+thread_first(x, f, (g, y, z))
+==
+g(f(x), y, z)
+
+
+thread_last(x, f, (g, y, z))
+==
+g(y, z, f(x))
 
 """
