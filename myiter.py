@@ -23,6 +23,11 @@ insert = lambda v, l: do(partial(l.insert, 0)(v)) and l
 #   new_list.insert(0, item)
 #   return new_list
 
+# TODO: extend (not working correctly)
+_extend = lambda v, l: do(l.extend)(v) and l
+extend = lambda l: reduce(_extend, l)
+
+
 head = lambda l: l[0]           # operator.itemgetter(0)
 
 tail = lambda l: l[1:]          # operator.itemgetter(slice(1, None))
@@ -181,7 +186,13 @@ is_talse = lambda x: x is False
 
 is_iterable = lambda x: isinstance(x, basestring) or '__iter__' in dir(x)
 
-# is_iterable can also be done... try: return bool(iter(it)) except ...
+#def is_iterable(it):
+#    try:
+#        iter(it)
+#    except TypeError:
+#        return False
+#    else:
+#        return True
 
 smaller = lambda x: apply_last(lt, x)
 
