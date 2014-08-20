@@ -5,7 +5,7 @@ from operator import lt, gt, contains
 from itertools import ifilter, ifilterfalse, takewhile
 from functools import wraps
 
-from toolz import compose
+from toolz import compose, groupby
 from toolz.curried import do, partial
 
 
@@ -87,6 +87,16 @@ def filter_none(it):
     return filter(None, it)
 
 
+# grouping
+
+def groupby_attr(attr, it):
+    return groupby(op.attrgetter(attr), it)
+
+
+def groupby_key(key, it):
+    return groupby(op.itemgetter(key), it)
+
+
 # functions on dicts
 
 def merge(dict_, second_dict=None, **kwargs):
@@ -101,6 +111,15 @@ def merge(dict_, second_dict=None, **kwargs):
 def dictmap(func, dict_):
     return [func(k, v) for k, v in dict_.iteritems()]
 
+
+def exclude(dict_, keys):
+    new_dict = dict_.copy()
+    for key in keys:
+        new_dict.pop(key)
+    return new_dict
+
+
+# silent functions (doesn't raise exceptions)
 
 def silent_map(function, iterable):
     temp = []
