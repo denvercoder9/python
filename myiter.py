@@ -16,7 +16,7 @@ append = lambda v, l: _do(l.append, v) and l
 #   new_list.append(item)
 #   return new_list
 
-insert = lambda v, l: _do(partial(l.insert, 0), v)
+insert = lambda v, l: _do(partial(l.insert, 0), v) and l
 
 # def insert(list_, item):
 #   new_list = list_[:]
