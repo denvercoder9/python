@@ -5,28 +5,25 @@ from operator import lt, gt, contains
 from itertools import ifilter, ifilterfalse, takewhile
 from functools import wraps
 
-from toolz import compose, groupby
+from toolz import compose, groupby, do as _do
 from toolz.curried import do, partial
 
 
-append = lambda v, l: do(l.append)(v) and l
+append = lambda v, l: _do(l.append, v) and l
 
 # def append(list_, item):
 #   new_list = list_[:]
 #   new_list.append(item)
 #   return new_list
 
-insert = lambda v, l: do(partial(l.insert, 0)(v)) and l
+insert = lambda v, l: _do(partial(l.insert, 0), v)
 
 # def insert(list_, item):
 #   new_list = list_[:]
 #   new_list.insert(0, item)
 #   return new_list
 
-# TODO: extend (not working correctly)
-_extend = lambda v, l: do(l.extend)(v) and l
-extend = lambda l: reduce(_extend, l)
-
+extend = partial(reduce, op.add)
 
 head = lambda l: l[0]           # operator.itemgetter(0)
 
