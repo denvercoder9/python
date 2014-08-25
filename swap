@@ -3,11 +3,9 @@ import sys
 
 
 def swap(first, second):
-    with open(first) as f1, open(second) as f2:
+    with open(first, 'w+') as f1, open(second, 'w+') as f2:
         file1 = f1.read()
         file2 = f2.read()
-
-    with open(first, 'w+') as f1, open(second, 'w+') as f2:
         f1.write(file2)
         f2.write(file1)
 
