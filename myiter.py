@@ -11,17 +11,7 @@ from toolz.curried import do, partial
 
 append = lambda v, l: _do(l.append, v) and l
 
-# def append(list_, item):
-#   new_list = list_[:]
-#   new_list.append(item)
-#   return new_list
-
 insert = lambda v, l: _do(partial(l.insert, 0), v) and l
-
-# def insert(list_, item):
-#   new_list = list_[:]
-#   new_list.insert(0, item)
-#   return new_list
 
 extend = partial(reduce, op.add)
 
@@ -55,6 +45,14 @@ def random_numbers(start, stop):
 
 
 # functions on lists
+
+def get(list_, index, default=None):
+    """List equivalent of dict.get"""
+    try:
+        return list_[index]
+    except IndexError:
+        return default
+
 
 def split_by(predicate, iterable):
     return map(list, [
