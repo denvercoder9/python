@@ -99,6 +99,13 @@ def groupby_key(key, it):
     return groupby(op.itemgetter(key), it)
 
 
+# or the above two "zum selbstbauen" (use as functions with vanilla groupby)
+
+key = op.itemgetter
+
+attr = op.attrgetter
+
+
 # functions on dicts
 
 def merge(dict_, second_dict=None, **kwargs):
