@@ -125,6 +125,7 @@ def exclude(dict_, keys):
         new_dict.pop(key)
     return new_dict
 
+# TODO is copy(dict_, exclude=None) a better semantic? :)
 
 # silent functions (doesn't raise exceptions)
 
