@@ -87,6 +87,51 @@ def filter_none(it):
     return filter(None, it)
 
 
+def av_filter(list_of_objects, **kwargs):
+    '''attribute->value filter
+
+    >>> class A(object):
+    ...    def __init__(self, x):
+    ...       self.x = x
+    >>> a = A(10)
+    >>> b = A(11)
+    >>> foo = [a, b]
+    >>> res = list(av_filter(foo, x=10))
+    >>> a in res
+    True
+    >>> b in res
+    False
+    >>> list(av_filter(foo, y=10))
+    []
+    '''
+    k, v = kwargs.popitem()
+    for obj in list_of_objects:
+        try:
+            if getattr(obj, k) == v:
+                yield obj  # TODO return value or whole object?
+        except AttributeError:
+            pass
+
+
+def kv_filter(list_of_dicts, **kwargs):
+    '''key->value filter
+
+    >>> foo = [{'a': 10, 'b': 11}, {'a': 99, 'c': 100}]
+    >>> list(kv_filter(foo, a=10))
+    [{'a': 10, 'b': 11}]
+    >>> list(kv_filter(foo, d=99))
+    []
+    '''
+
+    k, v = kwargs.popitem()
+    for dict_ in list_of_dicts:
+        try:
+            if dict_[k] == v:
+                yield dict_   # TODO return value or whole dict?
+        except KeyError:
+            pass
+
+
 # grouping
 
 def groupby_attr(attr, it):
