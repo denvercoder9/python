@@ -346,4 +346,9 @@ thread_last(x, f, (g, y, z))
 ==
 g(y, z, f(x))
 
+
+
+a subscritable itertools.cycle would be nice
+
+
 """
