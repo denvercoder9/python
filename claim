@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+
+"""Instead of doing chmod user:group file with some
+added intelligence"""
+
+import os
+import pwd
+import sys
+
+
+def get_sudo_user():
+    uid = int(os.getenv('SUDO_UID'))
+    gid = int(os.getenv('SUDO_GID'))
+    return uid, gid
+
+
+def claim(filename):
+    uid = os.getuid()
+    # os.getuid will give incorrect group on mac
+    gid = pwd.getpwuid(uid).pw_gid
+    if uid == 0:
+        uid, gid = get_sudo_user()
+    os.chown(filename, uid, gid)
+
+
+def main():
+    filenames = sys.argv[1:]
+    if not filenames:
+        sys.exit('Need at least one argument')
+    for filename in filenames:
+        claim(filename)
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception as e:
+        sys.exit(e)
