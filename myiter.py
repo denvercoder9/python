@@ -1,3 +1,29 @@
+"""
+
+Disclaimer: 100% work in progress.
+
+This is my personal attempt at creating a library to facilitate functinal
+programming in python.
+
+
+Personal todo-list:
+
+* clump
+    clump(n, iter)
+    clump_all(n, iter, default=None)
+
+    >> clump(3, range(10)
+    [(0, 1, 2), (3, 4, 5), (6, 7, 8)]
+
+    >> clump_all(3, range(10))
+    [(0, 1, 2), (3, 4, 5), (6, 7, 8), (9, None, None)]
+
+* irand_int
+* irand_int_unique
+* a subscritable itertools.cycle
+
+"""
+
 import random
 import inspect
 import operator as op
@@ -165,14 +191,15 @@ def dictmap(func, dict_):
 
 
 def exclude(dict_, keys):
+    # TODO: is copy(dict_, exclude=None) a better semantic?
     new_dict = dict_.copy()
     for key in keys:
         new_dict.pop(key)
     return new_dict
 
-# TODO is copy(dict_, exclude=None) a better semantic? :)
 
-# silent functions (doesn't raise exceptions)
+# silent functions (don't raise exceptions)
+
 
 def silent_map(function, iterable):
     temp = []
@@ -316,39 +343,3 @@ def call_while_not(predicate, function, *args, **kwargs):
 def get_longest_match(foo, bar):
     is_same = lambda tup: tup[0] == tup[1]
     return len(list(takewhile(is_same, zip(foo, bar))))
-
-
-"""
-
-TODO
-
-clump
-
-clump(n, iter)
-clump_all(n, iter, default=None)
-
->> clump(3, range(10)
-[(0, 1, 2), (3, 4, 5), (6, 7, 8)]
-
->> clump_all(3, range(10))
-[(0, 1, 2), (3, 4, 5), (6, 7, 8), (9, None, None)]
-
-
-irand_int
-irand_int_unique
-
-thread_first(x, f, (g, y, z))
-==
-g(f(x), y, z)
-
-
-thread_last(x, f, (g, y, z))
-==
-g(y, z, f(x))
-
-
-
-a subscritable itertools.cycle would be nice
-
-
-"""
