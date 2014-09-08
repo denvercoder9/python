@@ -70,7 +70,7 @@ def random_numbers(start, stop):
         yield random.randint(start, stop-1)
 
 
-def random_numbers_unqiue(start, stop):
+def random_numbers_unique(start, stop):
     taken = []
     while True:
         if len(taken) == stop-start:
