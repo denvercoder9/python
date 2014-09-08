@@ -67,10 +67,27 @@ def numbers(start=0, step=1):
 
 def random_numbers(start, stop):
     while True:
-        yield random.randint(start, stop)
+        yield random.randint(start, stop-1)
+
+
+def random_numbers_unqiue(start, stop):
+    taken = []
+    while True:
+        if len(taken) == stop-start:
+            break
+        num = random.randint(start, stop-1)
+        if num not in taken:
+            taken.append(num)
+            yield num
 
 
 # functions on lists
+
+def drop(excludes, iterable):
+    for item in iterable:
+        if item not in excludes:
+            yield item
+
 
 def get(list_, index, default=None):
     """List equivalent of dict.get"""
@@ -166,6 +183,9 @@ def groupby_attr(attr, it):
 
 def groupby_key(key, it):
     return groupby(op.itemgetter(key), it)
+
+
+groupby_index = groupby_key
 
 
 # or the above two "zum selbstbauen" (use as functions with vanilla groupby)
