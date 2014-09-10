@@ -8,30 +8,30 @@ import json
 import requests
 
 
-def post_json(url, data=None, extra_headers=None, validate=True, **kwargs):
+def post_json(url, data=None, extra_headers=None, validate=False, **kwargs):
     return request('post', url, data, extra_headers, validate, **kwargs)
 
 
-def put_json(url, data=None, extra_headers=None, validate=True, **kwargs):
+def put_json(url, data=None, extra_headers=None, validate=False, **kwargs):
     return request('put', url, data, extra_headers, validate, **kwargs)
 
 
-def delete_json(url, data=None, extra_headers=None, validate=True, **kwargs):
+def delete_json(url, data=None, extra_headers=None, validate=False, **kwargs):
     return request('delete', url, data, extra_headers, validate, **kwargs)
 
 
-def get_json(url, data=None, extra_headers=None, validate=True, **kwargs):
+def get_json(url, data=None, extra_headers=None, validate=False, **kwargs):
     return request('get', url, data, extra_headers, validate, **kwargs)
 
 
 def request(method, url, data=None, extra_headers=None,
-            validate=True, **kwargs):
+            validate=False, **kwargs):
     request_params = {
         'method': method,
         'url': url,
     }
     request_headers = {
-        'content-type': 'application/json'
+        'Content-Type': 'application/json'
     }
     if data:
         request_params['data'] = json.dumps(data)
