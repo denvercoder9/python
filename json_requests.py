@@ -62,7 +62,7 @@ class RequestContext(object):
                 'Content-Type': 'application/json',
             }
         }
-        self.request_params = kwargs
+        self.request_params.update(kwargs)
 
     def get(self, key):
         return self.request_params.get(key)
@@ -77,21 +77,25 @@ class RequestContext(object):
                   validate=False, **kwargs):
         return self.request('post', url, data, extra_headers, validate=False,
                             **kwargs)
+    post = post_json
 
     def put_json(self, url=None, data=None, extra_headers=None,
                  validate=False, **kwargs):
         return self.request('put', url, data, extra_headers, validate,
                             **kwargs)
+    put = put_json
 
     def delete_json(self, url, data=None, extra_headers=None, validate=False,
                     **kwargs):
         return self.request('delete', url, data, extra_headers, validate,
                             **kwargs)
+    delete = delete_json
 
     def get_json(self, url, data=None, extra_headers=None, validate=False,
                  **kwargs):
         return self.request('get', url, data, extra_headers, validate,
                             **kwargs)
+    get = get_json
 
     def _build_url(self, url):
         if self.base_url and url:
