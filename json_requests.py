@@ -75,7 +75,7 @@ class RequestContext(object):
 
     def post_json(self, url=None, data=None, extra_headers=None,
                   validate=False, **kwargs):
-        return self.request('post', url, data, extra_headers, validate=False,
+        return self.request('post', url, data, extra_headers, validate,
                             **kwargs)
     post = post_json
 
@@ -119,7 +119,8 @@ class RequestContext(object):
             request_params['headers'].update(extra_headers)
 
         request_params.update(kwargs)
+        _validate = request_params.pop('validate', validate)
         response = requests.request(**request_params)
-        if request_params.get('validate', validate):
-            response.raise_for_state()
+        if _validate:
+            response.raise_for_status()
         return response
