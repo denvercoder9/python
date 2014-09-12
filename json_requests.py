@@ -7,32 +7,35 @@ TODO: refactor to get rid of code duplication between module level functions
 and methods of the class
 
 """
+try:
+    import ujson as json
+except ImportError:
+    import json
 
-import json
 import requests
 
 
 def post_json(url, data=None, extra_headers=None, validate=False, **kwargs):
-    return _request('post', url, data, extra_headers, validate, **kwargs)
+    return request('post', url, data, extra_headers, validate, **kwargs)
 post = post_json
 
 
 def put_json(url, data=None, extra_headers=None, validate=False, **kwargs):
-    return _request('put', url, data, extra_headers, validate, **kwargs)
+    return request('put', url, data, extra_headers, validate, **kwargs)
 put = put_json
 
 
 def delete_json(url, data=None, extra_headers=None, validate=False, **kwargs):
-    return _request('delete', url, data, extra_headers, validate, **kwargs)
+    return request('delete', url, data, extra_headers, validate, **kwargs)
 delete = delete_json
 
 
 def get_json(url, data=None, extra_headers=None, validate=False, **kwargs):
-    return _request('get', url, data, extra_headers, validate, **kwargs)
+    return request('get', url, data, extra_headers, validate, **kwargs)
 get = get_json
 
 
-def _request(method, url, data=None, extra_headers=None,
+def request(method, url, data=None, extra_headers=None,
              validate=False, **kwargs):
     request_params = {
         'method': method,
