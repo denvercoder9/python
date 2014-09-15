@@ -67,13 +67,13 @@ class RequestContext(object):
         }
         self.request_params.update(kwargs)
 
-    def get(self, key):
+    def get_param(self, key):
         return self.request_params.get(key)
 
-    def set(self, key, name):
+    def set_param(self, key, name):
         self.request_params[key] = name
 
-    def delete(self, key):
+    def delete_param(self, key):
         del self.request_params[key]
 
     def post_json(self, url=None, data=None, extra_headers=None,
@@ -100,7 +100,7 @@ class RequestContext(object):
                             **kwargs)
     get = get_json
 
-    def _build_url(self, url):
+    def _build_url(self, url=None):
         if self.base_url and url:
             return '/'.join([
                 self.base_url.rstrip('/'),
