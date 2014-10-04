@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
+
+import os
+import sys
+from subprocess import Popen, PIPE
+
+import click
+
+
+@click.command()
+@click.argument('infile', type=click.Path(exists=True))
+@click.argument('outfile', required=False, default=None)
+@click.option('-f', '--force', is_flag=True)
+@click.option('-u', '--unlink', is_flag=True)
+def main(infile, outfile, unlink, force):
+    if not outfile:
+        outfile = '.'.join([infile[:-16], 'mp3'])
+    if os.path.exists(outfile):
+        if force:
+            os.unlink(outfile)
+        else:
+            sys.exit('{} already exists, use -f to overwrite.'.format(
+                outfile))
+
+    cmd = [
+        'ffmpeg',
+        '-i',
+        infile,
+        '-f',
+        'mp3',
+        '-ab',
+        '192000',
+        '-vn',
+        outfile,
+    ]
+    s = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    print 'Converting {}...'.format(infile),
+    failure = s.wait()
+    print 'Done.'
+    if failure:
+        print s.stderr.read()
+        return failure
+    elif unlink:
+        print 'Unlinking {}...'.format(infile),
+        os.unlink(infile)
+        print 'Done.'
+
+
+if __name__ == '__main__':
+    sys.exit(main())
