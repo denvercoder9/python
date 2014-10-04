@@ -31,13 +31,15 @@ from operator import lt, gt, contains
 from itertools import ifilter, ifilterfalse, takewhile
 from functools import wraps
 
-from toolz import compose, groupby, do as _do
+from toolz import compose, groupby
 from toolz.curried import do, partial
 
 
-append = lambda v, l: _do(l.append, v) and l
+#append = lambda v, l: _do(l.append, v) and l
+append = lambda v, l: l.append(v) or l
 
-insert = lambda v, l: _do(partial(l.insert, 0), v) and l
+#insert = lambda v, l: _do(partial(l.insert, 0), v) and l
+insert = lambda v, l: l.insert(0, v) or l
 
 extend = partial(reduce, op.add)
 
@@ -197,11 +199,24 @@ attr = op.attrgetter
 
 # functions on dicts
 
+update = lambda d, *args, **kwargs: d.update(*args, **kwargs) or d
+
+
 def merge(dict_, second_dict=None, **kwargs):
     """copy and merge"""
     temp = dict_.copy()
     if second_dict:
         temp.update(second_dict)
+    temp.update(kwargs)
+    return temp
+
+
+# TODO maybe prefer this solution?
+
+def merge2(dict_, *list_of_dicts, **kwargs):
+    temp = dict_.copy()
+    for d in list_of_dicts:
+        temp.update(d)
     temp.update(kwargs)
     return temp
 
