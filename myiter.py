@@ -328,6 +328,13 @@ div = partial(reduce, op.div)
 # recursive.map (?)
 
 
+# boolean operators
+
+none = lambda i: not any(i)
+
+some = lambda i: not all(i)
+
+
 # experimental
 
 def insert_first(func):
