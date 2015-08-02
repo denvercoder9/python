@@ -292,7 +292,7 @@ is_itrue = lambda x: bool(x)    # is implicit true
 
 is_true = lambda x: x is True
 
-is_talse = lambda x: x is False
+is_false = lambda x: x is False
 
 is_iterable = lambda x: isinstance(x, basestring) or '__iter__' in dir(x)
 
