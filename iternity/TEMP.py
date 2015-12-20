@@ -1,27 +1,8 @@
 """
+DISCLAIMER: THIS FILE TOTALLY UNORDERED AND NOT INTENDED FOR USE BY ANY MEANS AT ALL
 
-Disclaimer: 100% work in progress.
-
-This is my personal attempt at creating a library to facilitate functinal
-programming in python.
-
-
-Personal todo-list:
-
-* clump
-    clump(n, iter)
-    clump_all(n, iter, default=None)
-
-    >> clump(3, range(10)
-    [(0, 1, 2), (3, 4, 5), (6, 7, 8)]
-
-    >> clump_all(3, range(10))
-    [(0, 1, 2), (3, 4, 5), (6, 7, 8), (9, None, None)]
-
-* irand_int
-* irand_int_unique
-* a subscritable itertools.cycle
-
+SOME OF THE USEFUL STUFF WILL HOWEVER END UP IN THE OTHER MODULES, SOME WILL BE FOOD
+FOR THOUGHT OR EXPERIMENTATION AND MOST WILL GET SCRAPPED
 """
 
 import random
@@ -30,35 +11,37 @@ import operator as op
 from operator import lt, gt, contains
 from itertools import ifilter, ifilterfalse, takewhile
 from functools import wraps
-
+from collections import OrderedDict
+from compiler import ast
 from toolz import compose, groupby
 from toolz.curried import do, partial
+from operator import itemgetter, attrgetter
 
 
-#append = lambda v, l: _do(l.append, v) and l
-append = lambda v, l: l.append(v) or l
+# append = lambda v, l: _do(l.append, v) and l
+# append = lambda v, l: l.append(v) or l
 
-#insert = lambda v, l: _do(partial(l.insert, 0), v) and l
-insert = lambda v, l: l.insert(0, v) or l
+# insert = lambda v, l: _do(partial(l.insert, 0), v) and l
+# insert = lambda v, l: l.insert(0, v) or l
 
-extend = partial(reduce, op.add)
+# extend = partial(reduce, op.add)
 
-head = lambda l: l[0]           # operator.itemgetter(0)
+# head = lambda l: l[0]           #  operator.itemgetter(0)
 
-tail = lambda l: l[1:]          # operator.itemgetter(slice(1, None))
+# tail = lambda l: l[1:]          #  operator.itemgetter(slice(1, None))
 
-last = lambda l: l[-1]          # operator.itemgetter(-1)
+# last = lambda l: l[-1]          #  operator.itemgetter(-1)
 
-sort = do(list.sort)
+# sort = do(list.sort)
 
-shuffle = do(random.shuffle)
+# shuffle = do(random.shuffle)
 
-isort = compose(sort, iter)
+# isort = compose(sort, iter)
 
-ishuffle = compose(sort, iter)
+# ishuffle = compose(shuffle, iter)
 
 
-# infinite sequences
+#  infinite sequences
 
 def numbers(start=0, step=1):
     number = start
@@ -67,23 +50,24 @@ def numbers(start=0, step=1):
         number += step
 
 
-def random_numbers(start, stop):
-    while True:
-        yield random.randint(start, stop-1)
+# def random_numbers(start, stop):
+#     while True:
+#         yield random.randint(start, stop-1)
 
 
-def random_numbers_unique(start, stop):
-    taken = []
-    while True:
-        if len(taken) == stop-start:
-            break
-        num = random.randint(start, stop-1)
-        if num not in taken:
-            taken.append(num)
-            yield num
+# def random_numbers_unique(start, stop):
+#     taken = []
+#     total_count = stop - start
+#     while True:
+#         if len(taken) == total_count
+#             break
+#         num = random.randrange(start, stop)
+#         if num not in taken:
+#             taken.append(num)
+#             yield num
 
 
-# functions on lists
+#  functions on lists
 
 def drop(excludes, iterable):
     for item in iterable:
@@ -91,12 +75,12 @@ def drop(excludes, iterable):
             yield item
 
 
-def get(list_, index, default=None):
-    """List equivalent of dict.get"""
-    try:
-        return list_[index]
-    except IndexError:
-        return default
+# def get(list_, index, default=None):
+#     """List equivalent of dict.get"""
+#     try:
+#         return list_[index]
+#     except IndexError:
+#         return default
 
 
 def split_by(predicate, iterable):
@@ -176,63 +160,6 @@ def kv_filter(list_of_dicts, **kwargs):
         except KeyError:
             pass
 
-
-# grouping
-
-def groupby_attr(attr, it):
-    return groupby(op.attrgetter(attr), it)
-
-
-def groupby_key(key, it):
-    return groupby(op.itemgetter(key), it)
-
-
-groupby_index = groupby_key
-
-
-# or the above two "zum selbstbauen" (use as functions with vanilla groupby)
-
-key = op.itemgetter
-
-attr = op.attrgetter
-
-
-# functions on dicts
-
-update = lambda d, *args, **kwargs: d.update(*args, **kwargs) or d
-
-
-def merge(dict_, second_dict=None, **kwargs):
-    """copy and merge"""
-    temp = dict_.copy()
-    if second_dict:
-        temp.update(second_dict)
-    temp.update(kwargs)
-    return temp
-
-
-# TODO maybe prefer this solution?
-
-def merge2(dict_, *list_of_dicts, **kwargs):
-    temp = dict_.copy()
-    for d in list_of_dicts:
-        temp.update(d)
-    temp.update(kwargs)
-    return temp
-
-
-def dictmap(func, dict_):
-    return [func(k, v) for k, v in dict_.iteritems()]
-
-
-def exclude(dict_, keys):
-    # TODO: is copy(dict_, exclude=None) a better semantic?
-    new_dict = dict_.copy()
-    for key in keys:
-        new_dict.pop(key)
-    return new_dict
-
-
 # silent functions (don't raise exceptions)
 
 
@@ -274,46 +201,18 @@ def silent_filter(function, iterable):
 sfilter = silent_filter
 
 
-# predicates
-
-def apply_last(func, last):
-    @wraps(func)
-    def __inner(first):
-        return func(first, last)
-    return __inner
-
-is_integer = lambda x: isinstance(x, int)
-
-is_zero = lambda x: x == 0
-
-is_none = lambda x: x is None
-
-is_itrue = lambda x: bool(x)    # is implicit true
-
-is_true = lambda x: x is True
-
-is_false = lambda x: x is False
-
-is_iterable = lambda x: isinstance(x, basestring) or '__iter__' in dir(x)
-
-#def is_iterable(it):
-#    try:
-#        iter(it)
-#    except TypeError:
-#        return False
-#    else:
-#        return True
-
-smaller = lambda x: apply_last(lt, x)
-
-larger = lambda x: apply_last(gt, x)
-
-in_ = lambda x: partial(contains, x)
+def is_iterable(it):
+    try:
+        iter(it)
+    except TypeError:
+        return False
+    else:
+        return True
 
 
 # partial operators
 
-add = partial(reduce, op.add)  # this is really nothing but a sum()?
+add = partial(reduce, op.add)
 
 sub = partial(reduce, op.sub)
 
@@ -385,3 +284,213 @@ def call_while_not(predicate, function, *args, **kwargs):
 def get_longest_match(foo, bar):
     is_same = lambda tup: tup[0] == tup[1]
     return len(list(takewhile(is_same, zip(foo, bar))))
+
+
+
+
+def unique(iterable, keyfunc=None):
+    """
+    yield only items unique based on keyfunc, first occurence wins
+    """
+    keys = set()
+    for item in iterable:
+        key = keyfunc(item) if keyfunc else item
+        if key not in keys:
+            keys.add(key)
+            yield item
+
+
+def unique_last(iterable, keyfunc=None):
+    """
+    yield only items unique based on keyfunc, last occurence wins
+
+    note that is way more wasteful than unique() since the whole dict
+    has to be filled first
+    """
+    result = OrderedDict()
+    for item in iterable:
+        key = keyfunc(item) if keyfunc else item
+        result[key] = item
+    for key, item in result.iteritems():
+        yield item
+
+
+def split_on(predicate, iterable):
+    """
+    Return two lists: the first one for the items in `iterable`
+    where `predicate` is true, the second one where it's false
+
+    >>> less_than_5 = lambda x: x < 5
+    >>> split_on(less_than_5, range(10))
+    ([0, 1, 2, 3, 4], [5, 6, 7, 8, 9])
+    """
+    split = defaultdict(list)
+    for item in iterable:
+        split[predicate(item)].append(item)
+    return split[True], split[False]
+
+
+def split_by(predicate, iterable):
+    return (
+        chain.from_iterable(take_evens(toolz.partitionby(predicate, iterable))),
+        chain.from_iterable(take_odds(toolz.partitionby(predicate, iterable)))
+    )
+
+
+# non-lazy
+def take_nth(n, iterable, start=0):
+    return toolz.take_nth(n, list(iterable)[start:])
+
+
+# non-lazy
+def take_odds(iterable):
+    return take_nth(2, iterable, 1)
+
+
+# non-lazy
+def take_evens(iterable):
+    return toolz.take_nth(2, iterable)
+
+
+def group_by(func, iterable, predicate=None, transform=None):
+    predicate = predicate or (lambda _: True)
+    transform = transform or (lambda item: item)
+
+    grouped = defaultdict(list)
+    for item in iterable:
+        if predicate(item):
+            grouped[func(item)] = transform(item)
+    return grouped
+
+
+def flatten(list_):
+    return ast.flatten(list_)
+
+
+def unpack(func):
+    def inner(*args):
+        return func(*args)
+    return inner
+
+
+def umap(func, iterable):
+    " unpacking version of map "
+    return [func(*args) for args in iterable]
+
+
+def unpack(callable):
+    def inner(*args):
+        return callable(*args[0])
+    return inner
+
+
+def pack(callable):
+    def inner(*args):
+        return callable(args)
+    return inner
+
+
+def format_object(obj):
+    return ', '.join(['{}: {}'.format(k, v) for k, v in obj.__dict__.items()])
+
+
+def first_true(pred, it):
+    if pred(first(it)):
+        return first(it)
+    else:
+        return first(dropwhile(lambda x: not pred(x)), it)
+
+
+def first_false(pred, it):
+    return first(dropwhile(pred, it))
+
+"""
+try_until could maybe be a dropwhile + first
+
+first_true -> first(dropwhile( .... ))
+"""
+
+
+def ids(iterable):
+    return [item.id for item in iterable]
+
+
+
+def split(iterable, predicate):
+    return filter(predicate, iterable), filter(lambda x: not predicate(x), iterable)
+
+
+def filter_none(iterable):
+  return filter(None, iterable)
+
+
+def filter_false(iterable):
+  return filter(false, iterable)
+
+
+def filter_true(iterable):
+  return filter(true, iterable)
+
+
+class Getter(object):
+    """Very experimental syntax for [] and .attr access in for example 
+    map expressions. Likely to be very frowned upon ;)
+
+    map(_[0], [(1,2), (3,4), (5,6)])
+    map(_.foo, [someobj1, someobj2, someobj3])
+    """
+    def __getitem__(self, name):
+        return itemgetter(name)
+    def __getattr__(self, name):
+        return attrgetter(name)
+
+_ = Getter()
+
+
+
+def order_by(iterable, key):
+    return sorted(iterable, key=key)
+
+
+def length(iterable):
+  return len(list(iterable))
+
+
+def count_true(predicate, iterable):
+    return len(filrer(predicate, iterable))
+
+
+def groupby(iterable, key):
+    """A more sane version of itertools.groupby"""
+    groupby = itertools.groupby
+    return [(key, list(values)) for key, values in groupby(sorted(iterable, key=key), key)]
+
+
+def format_object(obj):
+    return ', '.join(['{}: {}'.format(k, v) for k, v in obj.__dict__.items()])
+
+
+class TrueDict(dict):
+    '''
+    A dict that never sets key = None, that is
+    you will never have to:
+    
+    if b:
+        a['b'] = b
+
+    '''
+    def __setitem__(self, key, value):
+        if value:
+            dict.__setitem__(self, key, value)
+
+    def set_none(self, key):
+        setattr(self, key, None)
+
+
+def filter(first, second=None):
+    '''For those of us not really liking the filter(None, iterable) syntax'''
+    
+    if callable(first) and second:
+        return __builtins__.filter(first, second)
+    else:
+        return __builtins__.filter(None, first)
