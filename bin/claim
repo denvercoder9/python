@@ -1,37 +1,45 @@
 #!/usr/bin/env python
 
-"""Instead of doing chmod user:group file with some
-added intelligence"""
+"""
+chown file to current user
+
+When called with sudo, assign to the real user
+"""
 
 import os
 import pwd
 import sys
 
+import click
+
 
 def get_sudo_user():
+    """If called with sudo, return the real user uid and gid """
     uid = int(os.getenv('SUDO_UID'))
     gid = int(os.getenv('SUDO_GID'))
     return uid, gid
 
 
 def claim(filename):
+    """Get the real uid and gid for current user and chmod <filename> to
+    belong to him.
+
+    pwd.getpwuid is used because os.getuid will return an incorrect group
+    id on mac.
+    """
     uid = os.getuid()
-    # os.getuid will give incorrect group on mac
     gid = pwd.getpwuid(uid).pw_gid
     if uid == 0:
         uid, gid = get_sudo_user()
     os.chown(filename, uid, gid)
 
 
-def main():
-    filenames = sys.argv[1:]
-    if not filenames:
-        sys.exit('Need at least one argument')
+@click.command()
+@click.argument('filenames', nargs=-1)
+def main(filenames):
     for filename in filenames:
         claim(filename)
 
+
 if __name__ == '__main__':
-    try:
-        main()
-    except Exception as e:
-        sys.exit(e)
+    main()
