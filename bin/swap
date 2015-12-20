@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-"""Very simple script to swap the names of two files."""
+"""Very simple script to swap the names/contents of two files."""
 
 import click
 
 
 def swap(first, second):
+    """Swap the contents of two files"""
     with open(first, 'r') as f1, open(second, 'r') as f2:
         file1 = f1.read()
         file2 = f2.read()
