@@ -1,0 +1,23 @@
+Iternity
+--------
+
+This is library is under heavy construction, NOT recommended for production use.
+
+Iternity is a collection of tools and abstractions that evolved over the years,
+to solve common problems and as well as some language design decision that I don't
+always agree with.
+
+The goal is the highest level of abstraction, the lowest possible amount of boilerplate,
+as well as general experimentation, in the hopes of discovering new interesting
+patterns and abstractions. In finding small pieces of abstraction that you can chain
+together in endless ways, you can reduce a lot of boilerplate and low-level
+distractions.
+
+I've been influenced by a number of functional programming languages over the
+years, as well as most of the underrated functional languages that are available
+for python.
+
+TODOs:
+
+- more tests and more doctests
+- extract the useful stuff from TEMP.py and remove the cruft
