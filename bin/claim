@@ -8,7 +8,6 @@ When called with sudo, assign to the real user
 
 import os
 import pwd
-import sys
 
 import click
 
