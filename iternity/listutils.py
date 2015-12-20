@@ -53,7 +53,7 @@ def shuffled(list_, **kwargs):
 #
 
 def take(n, iterable):
-    return itertools.islice(iterable, n)
+    return islice(iterable, n)
 
 
 #
