@@ -2,10 +2,12 @@
 
 Use at your own risk."""
 
+from types import MethodType
+
 
 def bind_method(obj, name, function):
     """Binds a method to a class instance.
-    
+
     This solves the error when monkey patching a method on an instance,
     that self will not get properly bound"""
     setattr(obj, name, MethodType(function, obj))
