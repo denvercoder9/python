@@ -1,4 +1,7 @@
 toolz
 click
-mock
 dateutil
+mock
+requests
+py.test
+pandas
