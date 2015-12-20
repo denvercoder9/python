@@ -1,8 +1,9 @@
 from itertools import islice
 
+
 class Cycle(object):
-    """
-    This object is similar to itertools.slice but with is subscriptable and sliceable.
+    """This object is similar to itertools.slice but with is subscriptable
+    and sliceable.
     """
 
     def __init__(self, seq):
@@ -24,7 +25,7 @@ class Cycle(object):
 
 
 def run_tests():
-    test_cycle = lambda: Cycle([1,2,3,4,5])
+    test_cycle = lambda: Cycle([1, 2, 3, 4, 5])
 
     cycle = test_cycle()
     assert cycle[0] == 1
@@ -37,12 +38,14 @@ def run_tests():
     assert cycle[7] == 3
 
     assert list(islice(test_cycle(), 0)) == []
-    assert list(islice(test_cycle(), 10)) == [1,2,3,4,5,1,2,3,4,5]
-    assert list(islice(test_cycle(), 13)) == [1,2,3,4,5,1,2,3,4,5,1,2,3]
-    assert list(islice(test_cycle(), 7)) == [1,2,3,4,5,1,2]
+    assert list(islice(test_cycle(), 10)) == [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+    assert list(islice(test_cycle(), 13)) == [1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
+                                              1, 2, 3]
+    assert list(islice(test_cycle(), 7)) == [1, 2, 3, 4, 5, 1, 2]
 
-    assert list(test_cycle()[0:10]) == [1,2,3,4,5,1,2,3,4,5]
-    assert list(test_cycle()[0:20]) == [1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]
+    assert list(test_cycle()[0:10]) == [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+    assert list(test_cycle()[0:20]) == [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3,
+                                        4, 5, 1, 2, 3, 4, 5]
 
 
 if __name__ == '__main__':
