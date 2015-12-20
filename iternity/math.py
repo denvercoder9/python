@@ -29,7 +29,7 @@ def median(list_):
     if is_odd(count):
         return sorted_list[mid]
     else:
-        return average([[sorted_list[mid], sorted_list[mid-1]])
+        return average([sorted_list[mid], sorted_list[mid-1]])
 
 
 def mode(list_):
