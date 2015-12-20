@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 """
+
+DISCLAIMER: left here for historical reasons, requests handles json natively now.
+No need to use this anymore!
+------------------------------------------------------------------------
+
 Small helper module to reduce some requests boilerplate, especially when
 used with json data
 
@@ -13,6 +18,10 @@ except ImportError:
     import json
 
 import requests
+
+import warnings
+warnings.filterwarnings('always', '', DeprecationWarning)
+warnings.warn('Use vanilla requests instead!', DeprecationWarning)
 
 
 def post_json(url, data=None, extra_headers=None, validate=False, **kwargs):
