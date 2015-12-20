@@ -1,9 +1,9 @@
+#!/usr/bin/env python
+
+""" Script to sum up worked hours from a timeEdition csv export """
+
 import click
 import pandas as pd
-
-"""
-Script to sum up worked hours from a timeEdition csv export
-"""
 
 
 def to_minutes(timestring):
@@ -13,17 +13,22 @@ def to_minutes(timestring):
     return hours*60 + minutes + int(seconds >= 30)
 
 
-def print_dataframe(df):
-    """Very improvable function to generate a working hours report from a
-    pandas dataframe
-    """
-    print 'Datum/Zeit gearbeitet'
-    print '---------------------'
+def get_hours_and_minutes(row):
+    """Returns the total time in hours and minutes for a dataframe row"""
+    return divmod(row['minutes'], 60)
+
+
+def get_total_hours_and_minutes(df):
+    """Returns the total time in hours and minutes for the whole dataframe"""
+    return divmod(df['minutes'].sum(), 60)
+
+
+def print_results(df):
+    """Pretty-print results"""
     for _, row in df.iterrows():
-        print '{} - {} Stunden {} Minuten'.format(row['date'],
-                                                  *divmod(row['minutes'], 60))
-    print '\n---------------------'
-    print 'Total: {} Stunden {} Minuten'.format(*divmod(df['minutes'].sum(), 60))
+        print '{} - {:>3} hours {:>2} minutes'.format(row['date'], *get_hours_and_minutes(row))
+    print
+    print 'Total    - {:>3} hours {:>2} minutes'.format(*get_total_hours_and_minutes(df))
 
 
 @click.command()
@@ -34,7 +39,8 @@ def main(filename):
     df = pd.DataFrame({'date': date,
                        'minutes': group['Duration'].map(to_minutes).sum()}
                       for date, group in csv.groupby('Start date'))
-    print_dataframe(df)
+
+    print_results(df)
 
 
 if __name__ == '__main__':
