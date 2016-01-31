@@ -2,7 +2,7 @@ from itertools import islice
 
 
 class Cycle(object):
-    """This object is similar to itertools.slice but with is subscriptable
+    """This object is similar to itertools.cycle but is subscriptable
     and sliceable.
     """
 
