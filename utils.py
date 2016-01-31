@@ -5,7 +5,7 @@ from subprocess import Popen, PIPE
 def system_call(cmd, **kwargs):
     """
     Wraps the rather ugly subprocess.Popen call.
-    
+
     `cmd` a string with the system call to be made, may also
     contain pipes, for example:
 
