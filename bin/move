@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+
+"""
+Excelent script if you like me have a billion files called things like
+temp, temp2, temp3... This gets nervwrecking once you start moving fles
+around (mv will either overwrite files or if you, like me, are a bit more
+careful with the -i flag it will compain).
+
+This script moves files safely and appends an integer after the file name.
+
+Still, use at own risk!
+
+"""
+
+import sys
+import os
+
+import re
+import shutil
+import click
+
+
+def name_exists(name, destination):
+    return name in os.listdir(destination)
+
+
+def find_name(name, destination):
+    try:
+        letters, digits = re.findall(r'([0-9]*)(\d+)$', name)[0]
+    except IndexError:
+        letters, digits = name, 1
+
+    i = 0
+    while name_exists(name, destination):
+        name = ''.join([letters, str(int(digits) + i)])
+        i += 1
+    return name
+
+
+def move(file_, destination):
+    original_name = file_
+    if os.path.isdir(destination):
+        file_ = find_name(file_, destination)
+        destination = os.path.join(destination, file_)
+    shutil.move(original_name, destination)
+
+
+@click.command()
+@click.argument('files', nargs=-1)
+@click.argument('destination')
+def main(files, destination):
+    for file_ in files:
+        move(file_, destination)
+
+
+if __name__ == '__main__':
+    main()

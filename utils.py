@@ -1,4 +1,13 @@
+"""A very mixed bag
+
+Note-to-self: clean up
+"""
+
+import sys
 import shlex
+from collections import Counter
+from contextlib import contextmanager
+from StringIO import StringIO
 from subprocess import Popen, PIPE
 
 
@@ -29,3 +38,28 @@ def system_call(cmd, **kwargs):
     elif out:
         return out.strip()
     return ''
+
+
+def setdefaultattr(obj, name, value):
+    """ This is for attribute what dict.setdefault is for dictionary keys """
+    return obj.__dict__.setdefault(name, value)
+
+
+class IdGenerator(Counter):
+    """Creates unique ids, optionally with prefix.
+    More or less like gensym in lisp """
+
+    def __call__(self, prefix=None):
+        self[prefix] += 1
+        if prefix is None:
+            return self[prefix]
+        else:
+            return prefix + str(self[prefix])
+
+
+@contextmanager
+def capture():
+    temp = StringIO()
+    sys.stdout = temp
+    yield temp
+    sys.stdout = sys.__stdout__
