@@ -59,6 +59,14 @@ class IdGenerator(Counter):
 
 @contextmanager
 def capture():
+    """
+    Context manager to capture stdout:
+
+    >>> with capture() as captured:
+    ...     print "hello"
+    >>> print captured.getvalue()
+    "hello"
+    """
     temp = StringIO()
     sys.stdout = temp
     yield temp

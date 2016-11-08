@@ -1,5 +1,5 @@
 """
-Small proof of concept server for a client.
+Small proof of concept server that I wrote for a customer.
 
 Takes some IDs and return an Excel document.
 """

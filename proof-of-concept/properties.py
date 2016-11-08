@@ -1,10 +1,10 @@
 """
 I almost never use descriptors although they're a powerful tool.
 
-An oft touted example of descriptors are @property
+An oft touted example of descriptors is @property
 
 I wanted to see for myself whether this would be hard to implement
-as descriptors from scratch. Turned out it wasn't...
+from scratch as a descriptor. Turned out it wasn't...
 
 """
 

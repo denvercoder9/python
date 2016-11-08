@@ -18,7 +18,8 @@ this, as well as getting attributes and calling methods on objects:
 
 >>> map(_['somekey'], listofdicts)
 >>> map(_.someattr, listofobjects)
->>> map(_.somemethod, listofobjects)
+>>> map(_('somemethod'), listofobjects)
+>>> map(_('somemethodwithextrargs', 'foo'), listofobjects)
 
 """
 
