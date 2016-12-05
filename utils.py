@@ -3,11 +3,8 @@
 Note-to-self: clean up
 """
 
-import sys
 import shlex
 from collections import Counter
-from contextlib import contextmanager
-from StringIO import StringIO
 from subprocess import Popen, PIPE
 
 
@@ -55,19 +52,3 @@ class IdGenerator(Counter):
             return self[prefix]
         else:
             return prefix + str(self[prefix])
-
-
-@contextmanager
-def capture():
-    """
-    Context manager to capture stdout:
-
-    >>> with capture() as captured:
-    ...     print "hello"
-    >>> print captured.getvalue()
-    "hello"
-    """
-    temp = StringIO()
-    sys.stdout = temp
-    yield temp
-    sys.stdout = sys.__stdout__
