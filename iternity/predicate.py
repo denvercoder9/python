@@ -130,7 +130,7 @@ def inv(*container):
     return partial(op.contains, container)
 
 
-def non_in(container):
+def not_in(container):
     """Returns a predicate function that returns true if x not in container
 
     >>> collection = [-1,7,9,12]
