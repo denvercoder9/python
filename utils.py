@@ -52,3 +52,10 @@ class IdGenerator(Counter):
             return self[prefix]
         else:
             return prefix + str(self[prefix])
+
+
+# TODO: do this in one pass, I still like the API though,
+# kind of similar to divmod...
+def minmax(it):
+    """Return a tuple of the minimum and maximum value"""
+    return min(it), max(it)

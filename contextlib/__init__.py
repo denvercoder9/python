@@ -2,10 +2,6 @@ import sys
 from contextlib import contextmanager
 from StringIO import StringIO
 
-#
-# Some extra context managers
-#
-
 
 @contextmanager
 def capture():
@@ -45,3 +41,16 @@ def tap(obj):
 
     """
     yield obj
+
+
+@contextmanager
+def suppress(*exceptions):
+    """Context manager for suppressing certain exceptions.
+
+    For python3, there's an identical context manager included as a part of
+    functools.
+    """
+    try:
+        yield
+    except exceptions:
+        pass
